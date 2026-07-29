@@ -2,7 +2,6 @@
 
 一个面向中文技术写作与个人表达的克制型 Hugo 博客主题。仓库同时包含主题源码和用于验证主题的示例站点。
 
-仓库地址：<https://github.com/Wildfire2282/wishpond-blog>
 
 ## 特性
 
