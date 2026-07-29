@@ -1,0 +1,45 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hugo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      HUGO_VERSION: 0.164.0
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Install Hugo
+        shell: bash
+        run: |
+          archive="hugo_${HUGO_VERSION}_linux-amd64.tar.gz"
+          release="https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}"
+          curl --fail --location --silent --show-error --output "$archive" "$release/$archive"
+          curl --fail --location --silent --show-error --output checksums.txt "$release/hugo_${HUGO_VERSION}_checksums.txt"
+          grep " $archive$" checksums.txt | sha256sum --check
+          tar --extract --gzip --file "$archive" hugo
+          sudo install --mode 0755 hugo /usr/local/bin/hugo
+
+      - name: Build site
+        run: hugo --gc --minify --cleanDestinationDir --panicOnWarning --printPathWarnings
+
+      - name: Build theme example
+        run: hugo --source themes/wishpond/exampleSite --themesDir ../.. --theme wishpond --gc --minify --panicOnWarning --noBuildLock
+
+      - name: Check generated URLs
+        shell: bash
+        run: |
+          if grep --recursive --extended-regexp '%E[4-9][0-9A-Fa-f]' public; then
+            echo "Found a percent-encoded non-ASCII URL" >&2
+            exit 1
+          fi

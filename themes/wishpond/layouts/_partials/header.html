@@ -1,0 +1,16 @@
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="site-name" href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="打开菜单">
+      <span class="nav-toggle__label">菜单</span>
+      <span class="nav-toggle__icon" aria-hidden="true"></span>
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="主导航">
+      {{ range site.Menus.main }}
+        {{ $exact := $.IsMenuCurrent .Menu . }}
+        {{ $section := $.HasMenuCurrent .Menu . }}
+        <a href="{{ .URL }}"{{ if $exact }} aria-current="page"{{ else if $section }} aria-current="location"{{ end }}>{{ .Name }}</a>
+      {{ end }}
+    </nav>
+  </div>
+</header>

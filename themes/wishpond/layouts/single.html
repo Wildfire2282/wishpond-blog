@@ -1,0 +1,60 @@
+{{ define "main" }}
+  <article class="page-shell article">
+    {{ partial "validate-post.html" . }}
+    <header class="article-header">
+      <span class="article-sigil" aria-hidden="true"><i></i><i></i><i></i></span>
+      {{ with index (.GetTerms "topics") 0 }}<a class="topic" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}
+      <h1>{{ .Title }}</h1>
+      {{ with .Description }}<p class="article-deck">{{ . }}</p>{{ end }}
+      <div class="article-meta">
+        <span>发布于 <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time></span>
+        {{ if ne (.Lastmod.Format "2006-01-02") (.Date.Format "2006-01-02") }}
+          <span>更新于 <time datetime="{{ .Lastmod.Format "2006-01-02" }}">{{ .Lastmod.Format "2006.01.02" }}</time></span>
+        {{ end }}
+        <span>{{ .ReadingTime }} 分钟阅读</span>
+      </div>
+    </header>
+
+    <div class="article-layout">
+      {{ if and (ne .Params.toc false) (gt (len .Fragments.Identifiers) 0) }}
+        <aside class="toc" aria-label="文章目录">
+          <details open>
+            <summary>本文目录</summary>
+            {{ .TableOfContents }}
+          </details>
+        </aside>
+      {{ end }}
+      <div class="article-content prose{{ if .Params.dropCap }} prose--drop-cap{{ end }}">
+        {{ .Content }}
+      </div>
+    </div>
+
+    <footer class="article-footer">
+      {{ with .GetTerms "tags" }}
+        <div class="article-tags" aria-label="文章标签">
+          {{ range . }}<a href="{{ .RelPermalink }}"># {{ .LinkTitle }}</a>{{ end }}
+        </div>
+      {{ end }}
+
+      {{ if ne .Params.related false }}
+        {{ $posts := where site.RegularPages "Section" "posts" }}
+        {{ $related := $posts.Related . | first 3 }}
+        {{ if lt (len $related) 3 }}
+          {{ $fallback := $posts.ByDate.Reverse | complement (union (slice .) $related) }}
+          {{ $related = union $related $fallback | first 3 }}
+        {{ end }}
+        {{ with $related }}
+          <section class="related" aria-labelledby="related-title">
+            <div class="section-label"><h2 id="related-title">相关文章</h2><span class="section-label__text">继续阅读</span></div>
+            {{ range . }}
+              <a class="related-item" href="{{ .RelPermalink }}">
+                <span>{{ .Title }}</span>
+                <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time>
+              </a>
+            {{ end }}
+          </section>
+        {{ end }}
+      {{ end }}
+    </footer>
+  </article>
+{{ end }}

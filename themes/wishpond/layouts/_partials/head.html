@@ -1,0 +1,66 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f7f7f4">
+<link rel="icon" href="{{ "favicon.svg" | relURL }}" type="image/svg+xml">
+{{ $description := .Description | default site.Params.description }}
+{{ $isPost := and .IsPage (eq .Section "posts") }}
+{{ $pageTitle := cond .IsHome site.Title .Title }}
+{{ if eq .Kind "404" }}{{ $pageTitle = "页面未找到" }}{{ end }}
+{{ $canonical := .Permalink }}
+{{ $paginator := false }}
+{{ if eq .Kind "section" }}
+  {{ $paginator = .Paginate .RegularPagesRecursive }}
+{{ else if eq .Kind "term" }}
+  {{ $paginator = .Paginate .RegularPages }}
+{{ end }}
+{{ with $paginator }}
+  {{ if gt $paginator.PageNumber 1 }}
+    {{ $canonical = $paginator.URL | absURL }}
+    {{ $pageTitle = printf "%s · 第 %d 页" $pageTitle $paginator.PageNumber }}
+  {{ end }}
+{{ end }}
+<meta name="description" content="{{ $description }}">
+{{ if or (eq .Type "search") (eq .Kind "404") }}<meta name="robots" content="noindex,follow">{{ end }}
+<title>{{ $pageTitle }}{{ if not .IsHome }} · {{ site.Title }}{{ end }}</title>
+{{ if ne .Kind "404" }}<link rel="canonical" href="{{ $canonical }}">{{ end }}
+<meta property="og:type" content="{{ if $isPost }}article{{ else }}website{{ end }}">
+<meta property="og:locale" content="{{ replace site.Language.Locale "-" "_" }}">
+<meta property="og:site_name" content="{{ site.Title }}">
+<meta property="og:title" content="{{ $pageTitle }}">
+<meta property="og:description" content="{{ $description }}">
+{{ if ne .Kind "404" }}<meta property="og:url" content="{{ $canonical }}">{{ end }}
+<meta name="twitter:card" content="summary">
+{{ if $isPost }}
+  <meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+  <meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}">
+{{ end }}
+{{ $style := resources.Get "css/main.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
+{{ if ne .Kind "404" }}
+  <script type="application/ld+json">
+  {{ if $isPost }}
+    {{ dict
+      "@context" "https://schema.org"
+      "@type" "BlogPosting"
+      "name" $pageTitle
+      "headline" $pageTitle
+      "description" $description
+      "url" $canonical
+      "mainEntityOfPage" $canonical
+      "inLanguage" site.Language.Locale
+      "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00")
+      "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")
+    | jsonify | safeJS }}
+  {{ else }}
+    {{ dict
+      "@context" "https://schema.org"
+      "@type" (cond .IsHome "WebSite" "WebPage")
+      "name" $pageTitle
+      "headline" $pageTitle
+      "description" $description
+      "url" $canonical
+      "inLanguage" site.Language.Locale
+    | jsonify | safeJS }}
+  {{ end }}
+  </script>
+{{ end }}

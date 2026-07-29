@@ -1,0 +1,14 @@
+/public/
+/resources/_gen/
+.hugo_build.lock
+themes/wishpond/exampleSite/public/
+themes/wishpond/exampleSite/resources/_gen/
+themes/wishpond/exampleSite/.hugo_build.lock
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log

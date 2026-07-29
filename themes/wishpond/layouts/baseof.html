@@ -1,0 +1,17 @@
+<!doctype html>
+<html class="no-js" lang="{{ site.Language.Locale }}">
+  <head>
+    {{ partial "head.html" . }}
+  </head>
+  <body data-search-index="{{ "search.json" | relURL }}">
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
+    <div class="reading-progress" aria-hidden="true"></div>
+    {{ if not .IsHome }}{{ partial "header.html" . }}{{ end }}
+    <main id="main-content">
+      {{ block "main" . }}{{ end }}
+    </main>
+    {{ partial "footer.html" . }}
+    {{ $script := resources.Get "js/main.js" | minify | fingerprint }}
+    <script src="{{ $script.RelPermalink }}" integrity="{{ $script.Data.Integrity }}" defer></script>
+  </body>
+</html>

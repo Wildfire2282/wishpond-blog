@@ -1,0 +1,15 @@
+{{ $topics := .GetTerms "topics" }}
+{{ if ne (len $topics) 1 }}
+  {{ errorf "Post %q must resolve exactly one topic" .Path }}
+{{ end }}
+{{ if not .Description }}
+  {{ errorf "Post %q must define a description" .Path }}
+{{ end }}
+{{ if not (findRE `^[a-z0-9]+(-[a-z0-9]+)*$` .Slug) }}
+  {{ errorf "Post %q must define a lowercase ASCII slug" .Path }}
+{{ end }}
+{{ range .Fragments.Identifiers }}
+  {{ if not (findRE `^[A-Za-z0-9][A-Za-z0-9_-]*$` .) }}
+    {{ errorf "Post %q contains a non-ASCII heading ID %q" $.Path . }}
+  {{ end }}
+{{ end }}

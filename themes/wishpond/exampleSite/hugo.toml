@@ -1,0 +1,51 @@
+baseURL = "https://example.org/"
+locale = "zh-CN"
+defaultContentLanguage = "zh-cn"
+title = "Wishpond 示例"
+theme = "wishpond"
+enableRobotsTXT = true
+hasCJKLanguage = true
+
+[params]
+  description = "Wishpond Hugo 主题示例站点。"
+  tagline = "愿落深井 回响自来"
+
+[taxonomies]
+  topic = "topics"
+  tag = "tags"
+
+[permalinks]
+  posts = "/posts/:slug/"
+
+[outputs]
+  home = ["HTML", "JSON"]
+
+[outputFormats.JSON]
+  mediaType = "application/json"
+  baseName = "search"
+  isPlainText = true
+  notAlternative = true
+
+[markup.goldmark.parser]
+  autoIDType = "github-ascii"
+
+[pagination]
+  pagerSize = 10
+
+[menus]
+  [[menus.main]]
+    name = "主题"
+    pageRef = "/topics"
+    weight = 10
+  [[menus.main]]
+    name = "标签"
+    pageRef = "/tags"
+    weight = 20
+  [[menus.main]]
+    name = "归档"
+    pageRef = "/archives"
+    weight = 30
+  [[menus.main]]
+    name = "搜索"
+    pageRef = "/search"
+    weight = 40

@@ -1,0 +1,13 @@
+name = "Wishpond"
+license = "MIT"
+licenselink = "https://github.com/Wildfire2282/wishpond-blog/blob/main/themes/wishpond/LICENSE"
+description = "A restrained Chinese Hugo theme for technical writing and personal notes."
+homepage = "https://github.com/Wildfire2282/wishpond-blog"
+demosite = "https://986257.xyz/"
+tags = ["blog", "minimal", "responsive", "chinese", "accessible"]
+features = ["toc", "search", "related content", "reading progress"]
+min_version = "0.164.0"
+
+[author]
+  name = "Wishpond contributors"
+  homepage = "https://github.com/Wildfire2282"
