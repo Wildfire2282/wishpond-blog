@@ -3,7 +3,7 @@
 Wishpond is a restrained, responsive Hugo theme for Chinese technical writing and personal notes.
 
 Repository: <https://github.com/Wildfire2282/wishpond-blog>
-Demo: <https://986257.xyz/>
+An offline example site is available in `exampleSite/`.
 
 ## Requirements
 

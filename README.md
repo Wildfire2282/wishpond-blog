@@ -3,7 +3,6 @@
 一个面向中文技术写作与个人表达的克制型 Hugo 博客主题。仓库同时包含主题源码和用于验证主题的示例站点。
 
 仓库地址：<https://github.com/Wildfire2282/wishpond-blog>
-演示站点：<https://986257.xyz/>
 
 ## 特性
 
@@ -43,7 +42,7 @@ hugo --gc --minify --cleanDestinationDir --panicOnWarning --printPathWarnings
 theme = "wishpond"
 ```
 
-完整的必需配置和内容结构位于 `themes/wishpond/exampleSite/`。本仓库根目录本身也是一个可直接构建的演示站点。
+完整的必需配置和内容结构位于 `themes/wishpond/exampleSite/`。本仓库根目录包含主题开发用的示例内容，不代表存在在线演示站点。
 
 ## 创建文章
 
@@ -94,7 +93,7 @@ dropCap: false
 
 ## 部署
 
-根目录 `static/_headers` 是演示站点使用的静态托管安全头示例，不属于主题文件。启用 CSP 或 HSTS 前应根据自己的域名、资源来源和托管平台进行审核。
+根目录 `static/_headers` 是站点开发用的静态托管安全头示例，不属于主题文件。启用 CSP 或 HSTS 前应根据自己的域名、资源来源和托管平台进行审核。
 
 ## 许可证
 
