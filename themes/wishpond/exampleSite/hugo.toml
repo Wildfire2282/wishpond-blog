@@ -1,7 +1,7 @@
 baseURL = "https://example.org/"
 locale = "zh-CN"
 defaultContentLanguage = "zh-cn"
-title = "Wishpond 示例"
+title = "生成式许愿井"
 theme = "wishpond"
 enableRobotsTXT = true
 hasCJKLanguage = true
